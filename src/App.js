@@ -1,23 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import About from "./About";
+import Home from "./Home";
+import {Route, Routes, Link} from "react-router-dom";
+import Profile from "./Profile";
+import Board from "./Board";
+import Boards from "./Boards";
+import Layout from "./Layout";
+import NotFound from "./NotFound";
+import "./App.css";
 
-function App() {
+const App =() => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {/* 2. a태그와 Link 비교: 새로고침유무 (리액트의 Link 방식은 전체페이지가 새로고침되지 않고 필요한 부분만 렌더링) */}
+      <a href="/about">이동</a>
+    <hr/>
+      <ul>
+        <li><Link to="/">메인홈</Link></li>
+        <li><Link to="/about">사이트소개</Link></li>      
+      </ul>
+    <hr/>
+      {/* 1. <Rountes> 를 활용하여 url 경로와 렌더링해줄 컴포넌트를 연결한다.  */}
+      <Routes>
+        <Route element={<Layout/>}/>
+        {/* <Route path="/" element={<Home/>}/> */}
+
+        <Route index element={<Home/>}/>
+        <Route path="/about" element={<About/>}/>
+        <Route path="/profiles/:username" element={<Profile/>}/>
+
+        {/* 게시글방법 1 - 게시글 목록(Boards)과 게시글 상세내용(Board) 분리 */}
+        {/* <Route path="/boards" element={<Boards/>}/>
+        <Route path="/boards/:id" element={<Board/>}/> */}
+        {/* 게시글 방법 2 - 게시글 상세내용을 하위 컴포넌트 진입시 , 게시글목록 상위컴포넌트가 보여지게함 */}
+        <Route path="/boards" element={<Boards/>}>
+          <Route path=":  id" element={<Board/>}/>
+        </Route>
+
+        {/* //"*"전체값을 다 받겟다. */}
+
+        <Route path="*" element={<NotFound/>}/>
+
+
+      </Routes>
     </div>
   );
 }
